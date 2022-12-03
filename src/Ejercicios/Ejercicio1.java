@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
@@ -12,11 +16,15 @@ import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.alg.vertexcover.GreedyVCImpl;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
+
+import Ejercicios.Ejercicio1.Persona2;
 import us.lsi.colors.GraphColors;
+import us.lsi.colors.GraphColors.Color;
 import us.lsi.common.List2;
 import us.lsi.grafos.datos.Ciudad;
 import us.lsi.graphs.Graphs2;
 import us.lsi.graphs.GraphsReader;
+
 import us.lsi.graphs.views.SubGraphView;
 
 public class Ejercicio1 {
@@ -33,30 +41,54 @@ public class Ejercicio1 {
 	}
 
 //TODO APARTADO A
-	public static Set<Persona2> apartadoA(Graph<Persona2, DefaultEdge> g) {
+	public static void apartadoA(Graph<Persona2, DefaultEdge> g, String nombreFichero) {
 // averiguamos quien tiene los  padres 
-		Set<Persona2> s = new HashSet<>();
-		for (Persona2 p : g.vertexSet()) {
-			// Boolean a =
-			// Graphs.predecessorListOf(g,p).stream().map(p-> Pair);
+		Predicate<Persona2> pV = p -> {// separo el pedicate del for
+			//para mayorr comodidad al editarlo
+			Boolean b =  false;
+			
 			if (Graphs.vertexHasPredecessors(g, p)) {
 				List<Persona2> lsAux = Graphs.predecessorListOf(g, p);
 				if (lsAux.get(0).Ciudad().equals(lsAux.get(1).Ciudad())
 						&& lsAux.get(0).year().equals(lsAux.get(1).year())) {
-					s.add(p);
+					b = true;
 				}
 			}
-
-		}
-		return s;
+			return b;
+		};
+		// se puede hace con un set o con un predicate
+		// usando un set de vertices, te ahorras el predicate de aristas 
+		// así seria el set:
+		//Set<Persona2> s = g.vertexSet().stream().filter(pV).collect(Collectors.toSet());
+		//hacemos la vista
+	Graph<Persona2, DefaultEdge> vista = SubGraphView.of(g, pV, t ->true );
+	System.out.println("Personas cuyos padres cumplen los requisitos:" + vista.vertexSet());
+	GraphColors.toDot(g,"resultados/ejercicio1/apartadoA"+
+	nombreFichero+".gv",
+	v-> v.nombre(),
+	a-> "",
+	v-> GraphColors.colorIf(Color.blue, vista.containsVertex(v)),//probar el color if de yescolor no colorr
+	a -> GraphColors.colorIf(Color.red, vista.containsEdge(a)));
+			
+		
+		
 	}
 
-//TODO APARTADO B
-	public static Set<Persona2> apartadoB(Graph<Persona2, DefaultEdge> g, Persona2 p) {
+// APARTADO B
+	public static Set<Persona2> apartadoB(Graph<Persona2, DefaultEdge> g, String nombrePersona,String nombreFichero) {
+		// ojo solo sirve si en el grafo solo hay una persona con el mismo nombre,
+		// si no en lugar de recibir un string debeia recibir un Persona 2  (o un Integer id)
+		Persona2 p = devuelvePersona2(g,nombrePersona);
+		
 		Set<Persona2> s = new HashSet<>();
 		apartadoBaux(g, p, s);
 		return s;
 	}
+
+	private static Persona2 devuelvePersona2(Graph<Persona2, DefaultEdge> g, String nombrePersona) {
+	
+	return g.vertexSet().stream().filter(v-> v.nombre().equalsIgnoreCase(nombrePersona.trim())).findFirst().get();
+}
 
 	private static void apartadoBaux(Graph<Persona2, DefaultEdge> g, Persona2 p, Set<Persona2> s) {
 		List<Persona2> ls = Graphs.predecessorListOf(g, p);
@@ -67,16 +99,35 @@ public class Ejercicio1 {
 			}
 		}
 	}
+	private static void apartadoBGrafo(Graph<Persona2, DefaultEdge> g, Persona2 p, Set<Persona2> s,String nombreFichero) {
+		Function<Persona2, Color> ancestroUorigen= v -> {
+			Color res = Color.black;
+			if(p.equals(v)) {//vertice origen 
+				res = Color.red;
+			}
+			else if(s.contains(v)) {
+				res = Color.blue;
+			}
+			return res;
+		};
+		Function<DefaultEdge, Color> colorArista = a -> Color.black;
+//		GraphColors.toDot(g,"resultados/ejercicio1/apartadoD"+ nombreFichero+".gv", v-> v.nombre(), a -> "",GraphColors.c,
+//			colorArista);
+
+	}
 
 // APARTADO C
 	public enum Relacion {
 		Hermanos, Primos, Otros
 	};
 
-	private static Relacion apartadoC(Graph<Persona2, DefaultEdge> grafo, Persona2 p1, Persona2 p2) {
+	public static Relacion apartadoC(Graph<Persona2, DefaultEdge> grafo, String nombre1, String nombre2) {
 // si el camino minimo es 4 son primos
 		// si el camino es 2 son hermanos
 		// otro otros
+		Persona2 p1 = devuelvePersona2(grafo, nombre1);
+		Persona2 p2 = devuelvePersona2(grafo, nombre2);
+		
 		ShortestPathAlgorithm<Persona2, DefaultEdge> a = new DijkstraShortestPath<>(Graphs.undirectedGraph(grafo));
 		Double s = a.getPathWeight(p1, p2);
 
@@ -88,11 +139,11 @@ public class Ejercicio1 {
 		} else {
 			res = Relacion.Otros;
 		}
-		return null;
+		return res;
 	}
 
 //ApartadoD:
-	public static Set<Persona2> apartadoD(Graph<Persona2, DefaultEdge> grafo) {
+	public static Set<Persona2> apartadoD(Graph<Persona2, DefaultEdge> grafo, String nombreFichero) {
 		Set<Persona2> res = new HashSet<>();
 		for (Persona2 padre : grafo.vertexSet()) {
 			Set<Persona2> setAux = new HashSet<>();
@@ -102,16 +153,26 @@ public class Ejercicio1 {
 			if (setAux.size() > 2)
 				res.add(padre);
 		}
+		apartadoDGrafo(grafo, res, nombreFichero);
 		return res;
+	}
+	private static void apartadoDGrafo(Graph<Persona2, DefaultEdge> grafo,Set<Persona2> set, String nombreFichero) {
+		GraphColors.toDot(grafo,"resultados/ejercicio1/apartadoD"+ nombreFichero+".gv", v-> v.nombre(), a -> "", v-> GraphColors.colorIf(Color.cyan, set.contains(v)),
+				a-> GraphColors.colorIf(Color.black, grafo.containsEdge(a)));
+		
 	}
 
 //apartado e
 
-	public static Set<Persona2> apartadoE(Graph<Persona2, DefaultEdge> grafo) {
+	public static Set<Persona2> apartadoE(Graph<Persona2, DefaultEdge> grafo, String nombreFichero) {
 
-		GreedyVCImpl<Persona2, DefaultEdge> ve = new GreedyVCImpl<>(grafo);
+		GreedyVCImpl<Persona2, DefaultEdge> ve = new GreedyVCImpl<>(Graphs.undirectedGraph(grafo));
+		apartadoEGrafo(grafo, ve.getVertexCover(), nombreFichero);
 		return ve.getVertexCover();
 	}
+	private static void apartadoEGrafo(Graph<Persona2, DefaultEdge> grafo,Set<Persona2> set, String nombreFichero) {
+		GraphColors.toDot(grafo,"resultados/ejercicio1/apartadoE"+ nombreFichero+".gv", v-> v.nombre(), a -> "", v-> GraphColors.colorIf(Color.cyan, set.contains(v)),
+				a-> GraphColors.colorIf(Color.black, grafo.containsEdge(a)));}
 
 	public static void main(String[] args) {
 
@@ -127,7 +188,7 @@ public class Ejercicio1 {
 				Persona2::ofFormat, s -> new DefaultEdge(), Graphs2::simpleDirectedGraph);
 
 		
-		System.out.println(apartadoA(grafo1));
+		
 
 	}
 
