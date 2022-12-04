@@ -3,6 +3,7 @@ package Ejercicios;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -16,6 +17,7 @@ import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.alg.vertexcover.GreedyVCImpl;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
+import org.jgrapht.nio.Attribute;
 
 import Ejercicios.Ejercicio1.Persona2;
 import us.lsi.colors.GraphColors;
@@ -98,21 +100,22 @@ public class Ejercicio1 {
 				s.add(paux);
 			}
 		}
+		
 	}
 	private static void apartadoBGrafo(Graph<Persona2, DefaultEdge> g, Persona2 p, Set<Persona2> s,String nombreFichero) {
-		Function<Persona2, Color> ancestroUorigen= v -> {
-			Color res = Color.black;
+		Function<Persona2, Map<String,Attribute>> ancestroUorigen= v -> {
+			Map<String,Attribute>res =  GraphColors.color(Color.black);
 			if(p.equals(v)) {//vertice origen 
-				res = Color.red;
+				res = GraphColors.color(Color.red);
 			}
 			else if(s.contains(v)) {
-				res = Color.blue;
+				res = GraphColors.color(Color.blue);
 			}
 			return res;
 		};
-		Function<DefaultEdge, Color> colorArista = a -> Color.black;
-//		GraphColors.toDot(g,"resultados/ejercicio1/apartadoD"+ nombreFichero+".gv", v-> v.nombre(), a -> "",GraphColors.c,
-//			colorArista);
+		Function<DefaultEdge,Map<String,Attribute>> colorArista = a -> GraphColors.color(Color.black);
+		GraphColors.toDot(g,"resultados/ejercicio1/apartadoD"+ nombreFichero+".gv", v-> v.nombre(), a -> "",GraphColors.c,
+	colorArista);
 
 	}
 
@@ -174,22 +177,7 @@ public class Ejercicio1 {
 		GraphColors.toDot(grafo,"resultados/ejercicio1/apartadoE"+ nombreFichero+".gv", v-> v.nombre(), a -> "", v-> GraphColors.colorIf(Color.cyan, set.contains(v)),
 				a-> GraphColors.colorIf(Color.black, grafo.containsEdge(a)));}
 
-	public static void main(String[] args) {
-
-		// el grafo es dirigido simple sin pesos
-
-		// apartado a simplemente un predicado y estilizar
-
-		// lo he hcho segun el ejercico deleeRelaciones de Varios ejemplos.java
-
-		Graph<Persona2, DefaultEdge> grafo1 = GraphsReader.newGraph("ficheros/Alumnos/PI3E1A_DatosEntrada.txt",
-				Persona2::ofFormat, s -> new DefaultEdge(), Graphs2::simpleDirectedGraph);
-		Graph<Persona2, DefaultEdge> grafo2 = GraphsReader.newGraph("ficheros/Alumnos/PI3E1B_DatosEntrada.txt",
-				Persona2::ofFormat, s -> new DefaultEdge(), Graphs2::simpleDirectedGraph);
-
-		
-		
-
+	
 	}
 
 }
