@@ -42,7 +42,7 @@ public class Ejercicio1 {
 		}
 	}
 
-//TODO APARTADO A
+//APARTADO A
 	public static void apartadoA(Graph<Persona2, DefaultEdge> g, String nombreFichero) {
 // averiguamos quien tiene los  padres 
 		Predicate<Persona2> pV = p -> {// separo el pedicate del for
@@ -103,20 +103,27 @@ public class Ejercicio1 {
 		
 	}
 	private static void apartadoBGrafo(Graph<Persona2, DefaultEdge> g, Persona2 p, Set<Persona2> s,String nombreFichero) {
-		Function<Persona2, Map<String,Attribute>> ancestroUorigen= v -> {
-			Map<String,Attribute>res =  GraphColors.color(Color.black);
-			if(p.equals(v)) {//vertice origen 
-				res = GraphColors.color(Color.red);
-			}
-			else if(s.contains(v)) {
-				res = GraphColors.color(Color.blue);
-			}
-			return res;
-		};
-		Function<DefaultEdge,Map<String,Attribute>> colorArista = a -> GraphColors.color(Color.black);
-		GraphColors.toDot(g,"resultados/ejercicio1/apartadoD"+ nombreFichero+".gv", v-> v.nombre(), a -> "",GraphColors.c,
-	colorArista);
+	
+		GraphColors.toDot(g,"resultados/ejercicio1/apartadoD"+ nombreFichero+".gv", v-> v.nombre(), a -> "",v-> asigna(v,p,s),e->devuelveNegro());
 
+	}
+	private static Color devuelveNegro() {
+		//lo hago así porque si no el toDot empiaza a protestar
+		return Color.black;
+	}
+	
+	private static Color asigna(Persona2 v, Persona2 p, Set<Persona2> s ) {
+	//lo hago asi porqu con fucntion me da errores
+		// Cosads de Map string atributte
+		Color res ; 
+		if (v.equals(p))
+			res= Color.red;
+		else if(s.contains(v))
+			res = Color.blue;
+		else res = Color.black;
+		return res;
+			
+	
 	}
 
 // APARTADO C

@@ -28,13 +28,13 @@ public class Ejercicio2 {
 
 		public static Ciudad2 of(String x) {
 			String[] s = x.split(",");
-			return new Ciudad2(s[0], Integer.valueOf(s[1].replace('p', ' ').trim()));
+			return new Ciudad2(s[0], Integer.valueOf(s[1].replace('p', ' ').strip()));
 		}
 	}
 
 	public static record Arista(Double precio, Double tiempo) {
 		public static Arista ofFormat(String[] s) {
-			return new Arista(Double.valueOf(s[0].replace("euros", "").trim()), Double.valueOf(s[1].replace("minutos", "").trim()));
+			return new Arista(Double.valueOf(s[0].replace("euros", "").strip()), Double.valueOf(s[1].replace("minutos", "").strip()));
 		}
 
 		public static Arista of(String x) {
