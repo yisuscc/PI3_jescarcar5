@@ -78,16 +78,16 @@ public class Ejercicio2 {
 
 	private static void apartadoBGrafo(Graph<Ciudad2, Arista> g, Set<Ciudad2> setRes) {
 		Predicate<Arista> estaEnSet =  a -> setRes.containsAll(Graphs2.getVertices(g, a));
-	 GraphColors.toDot(g, "resiltados/ejercicio2/apartadoB.gv", v-> v.nombre() + v.puntos()+ "Puntos", a-> "", 
+	 GraphColors.toDot(g, "resultados/ejercicio2/apartadoB.gv", v-> v.nombre() + v.puntos()+ "Puntos", a-> "", 
 			 v-> GraphColors.colorIf(Color.blue, setRes.contains(v)), e->GraphColors.colorIf(Color.blue, estaEnSet.test(e)));
 		
 	}
 
 	// apartado c
-	// creo ques eseria mejor devolver una tupla con un set de edges y otro de
-	// vertices
-	public static List<Ciudad2> apartadoC(Graph<Ciudad2, Arista> g) {
-		GraphPath<Ciudad2, Arista> gp = new HeldKarpTSP().getTour(g);
+	
+	// 
+	public static Pair<Double, List<Ciudad2>> apartadoC(Graph<Ciudad2, Arista> g) {
+		GraphPath<Ciudad2, Arista> gp = new HeldKarpTSP<Ciudad2, Arista> ().getTour(g);
 		
 		Graph<Ciudad2, Arista> gAux = gp.getGraph();
 		GraphColors.toDot(g, "resultados/ejercicio2/apartadoC.gv", v->v.nombre(), e-> "",
@@ -95,7 +95,7 @@ public class Ejercicio2 {
 				e-> GraphColors.colorIf(Color.blue, gAux.containsEdge(e)));
 		
 		
-		return gp.getVertexList();
+		return Pair.of(gp.getWeight(), gp.getVertexList());
 	}
 
 	// apartado d

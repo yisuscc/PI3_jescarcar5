@@ -111,10 +111,7 @@ public class Ejercicio1 {
 				e-> GraphColors.color(Color.black));
 
 	}
-	private static Color devuelveNegro() {
-		//lo hago así porque si no el toDot empiaza a protestar
-		return Color.black;
-	}
+
 	
 	private static Color asigna(Persona2 v, Persona2 p, Set<Persona2> s ) {
 	//lo hago asi porqu con fucntion me da errores

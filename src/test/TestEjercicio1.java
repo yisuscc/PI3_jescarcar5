@@ -59,11 +59,11 @@ public class TestEjercicio1 {
 	}
 	public static void main(String[] args) {
 	
-		//testApartadoA();
+	testApartadoA();
 testApartadoB();
-		//testApartadoC();
-		//testApartadoD();
-		//testApartadoE();
+		testApartadoC();
+		testApartadoD();
+		testApartadoE();
 	}
 
 }
