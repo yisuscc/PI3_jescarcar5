@@ -1,5 +1,6 @@
 package Ejercicios;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -78,7 +79,7 @@ public class Ejercicio2 {
 
 	private static void apartadoBGrafo(Graph<Ciudad2, Arista> g, Set<Ciudad2> setRes) {
 		Predicate<Arista> estaEnSet =  a -> setRes.containsAll(Graphs2.getVertices(g, a));
-	 GraphColors.toDot(g, "resultados/ejercicio2/apartadoB.gv", v-> v.nombre() + v.puntos()+ "Puntos", a-> "", 
+	 GraphColors.toDot(g, "resultados/ejercicio2/apartadoB.gv", v-> v.nombre() +" "+ v.puntos()+ "Puntos", a-> "", 
 			 v-> GraphColors.colorIf(Color.blue, setRes.contains(v)), e->GraphColors.colorIf(Color.blue, estaEnSet.test(e)));
 		
 	}
@@ -99,12 +100,16 @@ public class Ejercicio2 {
 	}
 
 	// apartado d
-public static Trio<Ciudad2, Ciudad2, Double> apartadoD(Graph<Ciudad2, Arista> g, Set<Ciudad2>set){
-	Set<Trio<Ciudad2, Ciudad2, Double>> ss= new HashSet<>(); //se puede usar un sorted set 
+public static Trio<Ciudad2, Ciudad2, Double> apartadoD(Graph<Ciudad2, Arista> g, Set<Ciudad2>set,String label){
+	SortedSet<Trio<Ciudad2, Ciudad2, Double>> ss= new TreeSet<>((c1,c2)-> c1.third().compareTo(c2.third())); 
+	//se puede usar tambien un set y un stream 
 	DijkstraShortestPath<Ciudad2,Arista> dij= new DijkstraShortestPath<>(g);
+	
 	for(Ciudad2 c1 : set) {
-		Set<Ciudad2>  setAux = Set.copyOf(set);
+		
+		Set<Ciudad2>  setAux = new HashSet<>(set);
 		setAux.remove(c1);
+		
 		for(Ciudad2 c2 : setAux) {
 			if(!Graphs.neighborSetOf(g, c1).contains(c2)) {
 				Double pesoCamino = dij.getPathWeight(c1, c2);
@@ -113,11 +118,21 @@ public static Trio<Ciudad2, Ciudad2, Double> apartadoD(Graph<Ciudad2, Arista> g,
 			}
 		}
 	}
-	
-	return ss.stream().min((a,b)-> a.third().compareTo(b.third())).get();
+apartadoDGrafo(g, dij, ss.first(), label);
+	return ss.first()	;
 }
 
 
+public static void apartadoDGrafo(Graph<Ciudad2, Arista> g,
+		DijkstraShortestPath<Ciudad2,Arista> dij,Trio<Ciudad2, Ciudad2, Double>t,String label) {
+	Predicate<Ciudad2> pV =v -> t.first().equals(v) || t.second().equals(v);
+	 String fichero  = "resultados/ejercicio2/apartadoD"+label+".gv";
+	Predicate<Arista> pA = a-> dij.getPath(t.first(), t.second()).getEdgeList().contains(a);
+	GraphColors.toDot(g, fichero,  v-> v.nombre() ,e-> e.tiempo()+" Min", v-> GraphColors.colorIf(Color.green, pV.test(v)),
+			a-> GraphColors.colorIf(Color.green, pA.test(a)));
+	
+	
+}
 	
 	
 

@@ -15,6 +15,7 @@ import Ejercicios.Ejercicio2;
 import Ejercicios.Ejercicio2.Arista;
 import Ejercicios.Ejercicio2.Ciudad2;
 import us.lsi.common.Pair;
+import us.lsi.common.Trio;
 import us.lsi.graphs.Graphs2;
 import us.lsi.graphs.GraphsReader;
 
@@ -50,10 +51,30 @@ public class TestEjercicio2 {
 		System.out.println("Grupo de ciudades a visitar que dan lugar al camino cerrado de menor precio: " + lsAux+ "-->" +peso);
 		
 	}
+	public static void testApartadoD() {
+	
+		System.out.println("Los grafos resultantes se encuentran en la carpeta resultados/ejercicio2");
+		System.out.println("Test apartado D ejercicio 2");
+		List<Set<Ciudad2>> ls1 = Ejercicio2.apartadoA(grafoTiempo);
+		Trio<Ciudad2,Ciudad2, Double> t1 = Ejercicio2.apartadoD(grafoTiempo, ls1.get(0),"Grupo1");
+		Trio<Ciudad2,Ciudad2, Double> t2 = Ejercicio2.apartadoD(grafoTiempo, ls1.get(1),"Grupo2");
+		List<String> lsAux1 = ls1.get(0).stream().map(c->c.nombre()).toList();
+		List<String> lsAux2 = ls1.get(1).stream().map(c->c.nombre()).toList();
+	
+		System.out.println("Para el grupo"+ lsAux1+", las ciudades no conectadas directamente"
+				+ " entre las que se puede viajar en menor tiempo son: ");
+		System.out.println("Origen: "+t1.first().nombre()+" Destino: "+t1.second().nombre() +"--> "+ t1.third()+"Minutos");
+		System.out.println("---------------------");
+		System.out.println("Para el grupo"+ lsAux2+", las ciudades no conectadas directamente"
+				+ " entre las que se puede viajar en menor tiempo son: ");
+		System.out.println("Origen: "+t2.first().nombre()+" Destino: "+t2.second().nombre() +"--> "+ t2.third()+"Minutos");
+		
+	}
 	public static void main(String[] args) {
 		testApartadoA();
 		testApartadoB();
-		testApartadoC();
+		//testApartadoC(); //TODO Corregir problema Con el HK
+		testApartadoD();
 		
 
 	}

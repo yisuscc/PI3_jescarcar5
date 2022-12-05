@@ -60,7 +60,7 @@ public class TestEjercicio1 {
 	public static void main(String[] args) {
 	
 	testApartadoA();
-testApartadoB();
+	testApartadoB();
 		testApartadoC();
 		testApartadoD();
 		testApartadoE();
