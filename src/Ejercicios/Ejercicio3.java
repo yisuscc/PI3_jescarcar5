@@ -31,10 +31,12 @@ public class Ejercicio3 {
 		 Integer nCromatico = vcaa.getColoring().getNumberColors(); 
 		 Map<String, Integer> mColor = vcaa.getColoring().getColors();
 		 List<Set<String>> ls = vcaa.getColoring().getColorClasses();
+		 apartadoAGrafo(g, mColor, nomFich);
 		 return Pair.of(nCromatico,ls);
 	}
 	public static void apartadoAGrafo(Graph<String, DefaultEdge> g,Map<String, Integer> mColor, String nomFich) {
 		GraphColors.toDot(g,"resultados/ejercicio3/apartadoA"+nomFich+".gv",v-> v, a-> "",
 				v->GraphColors.color(mColor.get(v)), e-> GraphColors.color(8));
+	
 	}
 }

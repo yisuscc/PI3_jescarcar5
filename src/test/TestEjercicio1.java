@@ -54,7 +54,7 @@ public class TestEjercicio1 {
 //testApartadoB();
 		//testApartadoC();
 		//testApartadoD();
-		testApartadoE();
+		//testApartadoE();
 	}
 
 }
