@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
@@ -17,6 +19,7 @@ import us.lsi.colors.GraphColors;
 import us.lsi.colors.GraphColors.Color;
 import us.lsi.common.Pair;
 import us.lsi.common.Trio;
+import us.lsi.graphs.Graphs2;
 
 public class Ejercicio2 {
 	public static record Ciudad2(String nombre, Integer puntos) {
@@ -34,12 +37,12 @@ public class Ejercicio2 {
 
 	public static record Arista(Double precio, Double tiempo) {
 		public static Arista ofFormat(String[] s) {
-			return new Arista(Double.valueOf(s[0].replace("euros", "").strip()), Double.valueOf(s[1].replace("minutos", "").strip()));
+			return new Arista(Double.valueOf(s[2].replace("euros", "").strip()), Double.valueOf(s[3].replace("min", "").strip()));
 		}
 
 		public static Arista of(String x) {
 			String[] s = x.split(",");
-			return new Arista(Double.valueOf(s[0].replace("euros", "")), Double.valueOf(s[1].replace("minutos", "")));
+			return new Arista(Double.valueOf(s[2].replace("euros", "")), Double.valueOf(s[3].replace("min", "")));
 		}
 	}
 
@@ -65,10 +68,19 @@ public class Ejercicio2 {
 		}
 	//apartado b
 	public static Set<Ciudad2> apartadoB(Graph<Ciudad2, Arista> g) {
-		// TODO
+		List<Set<Ciudad2>> lss = apartadoA(g);
+		Function<Set<Ciudad2>,Integer> sumPuntos= s-> s.stream().mapToInt(Ciudad2::puntos).sum();
+		Set<Ciudad2> setRes = lss.stream().max((a,b)-> sumPuntos.apply(a).compareTo(sumPuntos.apply(b))).orElse(new HashSet<>());
 		
+		apartadoBGrafo(g,setRes);
+		return setRes;
+	}
+
+	private static void apartadoBGrafo(Graph<Ciudad2, Arista> g, Set<Ciudad2> setRes) {
+		Predicate<Arista> estaEnSet =  a -> setRes.containsAll(Graphs2.getVertices(g, a));
+	 GraphColors.toDot(g, "resiltados/ejercicio2/apartadoB.gv", v-> v.nombre() + v.puntos()+ "Puntos", a-> "", 
+			 v-> GraphColors.colorIf(Color.blue, setRes.contains(v)), e->GraphColors.colorIf(Color.blue, estaEnSet.test(e)));
 		
-		return null;
 	}
 
 	// apartado c

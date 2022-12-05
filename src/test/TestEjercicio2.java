@@ -26,6 +26,11 @@ public class TestEjercicio2 {
 			System.out.println("Conjunto "+i.toString() + ls.get(i));
 		}
 	}
+	public static void testApartadoB() {
+		System.out.println("Test apartado B ejercicio 2");
+		System.out.println("Los grafos resultantes se encuentran en la carpeta resultados/ejercicio2");
+		Set<Ciudad2> set = Ejercicio2.apartadoB(grafoPrecio)//cualquierade los 2 vale
+	}
 	public static void main(String[] args) {
 		testApartadoA();
 
