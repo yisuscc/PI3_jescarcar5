@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.alg.interfaces.ShortestPathAlgorithm;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.alg.vertexcover.GreedyVCImpl;
@@ -20,6 +21,8 @@ import org.jgrapht.graph.SimpleDirectedGraph;
 import org.jgrapht.nio.Attribute;
 
 import Ejercicios.Ejercicio1.Persona2;
+import Ejercicios.Ejercicio2.Arista;
+import Ejercicios.Ejercicio2.Ciudad2;
 import us.lsi.colors.GraphColors;
 import us.lsi.colors.GraphColors.Color;
 import us.lsi.common.List2;
@@ -70,7 +73,7 @@ public class Ejercicio1 {
 	v-> v.nombre(),
 	a-> "",
 	v-> GraphColors.colorIf(Color.blue, vista.containsVertex(v)),//probar el color if de yescolor no colorr
-	a -> GraphColors.colorIf(Color.red, vista.containsEdge(a)));
+	a -> GraphColors.colorIf(Color.red, vista.containsEdge(a))  );
 			
 		
 		
@@ -86,7 +89,7 @@ public class Ejercicio1 {
 		apartadoBaux(g, p, s);
 		return s;
 	}
-
+//
 	private static Persona2 devuelvePersona2(Graph<Persona2, DefaultEdge> g, String nombrePersona) {
 	
 	return g.vertexSet().stream().filter(v-> v.nombre().equalsIgnoreCase(nombrePersona.trim())).findFirst().get();
@@ -104,7 +107,8 @@ public class Ejercicio1 {
 	}
 	private static void apartadoBGrafo(Graph<Persona2, DefaultEdge> g, Persona2 p, Set<Persona2> s,String nombreFichero) {
 	
-		GraphColors.toDot(g,"resultados/ejercicio1/apartadoD"+ nombreFichero+".gv", v-> v.nombre(), a -> "",v-> asigna(v,p,s),e->devuelveNegro());
+		GraphColors.toDot(g,"resultados/ejercicio1/apartadoD"+ nombreFichero+".gv", v-> v.nombre(), a -> "",v->GraphColors.color(asigna(v, p, s)),
+				e-> GraphColors.color(Color.black));
 
 	}
 	private static Color devuelveNegro() {
@@ -115,16 +119,20 @@ public class Ejercicio1 {
 	private static Color asigna(Persona2 v, Persona2 p, Set<Persona2> s ) {
 	//lo hago asi porqu con fucntion me da errores
 		// Cosads de Map string atributte
-		Color res ; 
+		// y no entiendo el piorque la verdad 
+	// si es casi igual que el de asignaColor del ejemplo 
+		Integer  res ; 
+		Color[] vc = Color.values();
 		if (v.equals(p))
-			res= Color.red;
+			res=  2;
 		else if(s.contains(v))
-			res = Color.blue;
-		else res = Color.black;
-		return res;
+			res = 4;
+		else res = 5;
+		return vc[5];
 			
 	
 	}
+
 
 // APARTADO C
 	public enum Relacion {
@@ -182,9 +190,10 @@ public class Ejercicio1 {
 	}
 	private static void apartadoEGrafo(Graph<Persona2, DefaultEdge> grafo,Set<Persona2> set, String nombreFichero) {
 		GraphColors.toDot(grafo,"resultados/ejercicio1/apartadoE"+ nombreFichero+".gv", v-> v.nombre(), a -> "", v-> GraphColors.colorIf(Color.cyan, set.contains(v)),
-				a-> GraphColors.colorIf(Color.black, grafo.containsEdge(a)));}
+				a-> GraphColors.colorIf(Color.black, grafo.containsEdge(a)));
+		}
 
 	
 	}
 
-}
+

@@ -5,6 +5,8 @@ import org.jgrapht.graph.DefaultEdge;
 
 import Ejercicios.Ejercicio1;
 import Ejercicios.Ejercicio1.Persona2;
+import us.lsi.colors.GraphColors;
+import us.lsi.colors.GraphColors.Color;
 import us.lsi.graphs.Graphs2;
 import us.lsi.graphs.GraphsReader;
 
@@ -18,11 +20,17 @@ public class TestEjercicio1 {
 		System.out.println("Testa apartado A fichero A");
 		Ejercicio1.apartadoA(grafo1, "FicheroA");
 		System.out.println("Test apartado a fichero b");
-		Ejercicio1.apartadoA(grafo1, "FicheroB");
+		Ejercicio1.apartadoA(grafo2, "FicheroB");
 		
 	}
 	public static void testApartadoB() {
-		//TODO
+		System.out.println("Los grafos resultantes se encuentran en la carpeta resultados/ejercicio1");
+		System.out.println("Test apartado B fichero A");
+		System.out.println("Los ancestros de maría son : "+ Ejercicio1.apartadoB(grafo1, "Maria", "FicheroA"));
+		System.out.println("Test apartado B fichero B");
+		System.out.println("Los ancestros  de raquel son : "+ Ejercicio1.apartadoB(grafo2, "Raquel", "FicheroA"));
+		
+		
 	}
 	public static void testApartadoC() {
 		System.out.println(" Test apartado C Fichero A");
@@ -50,8 +58,9 @@ public class TestEjercicio1 {
 		 
 	}
 	public static void main(String[] args) {
-	//testApartadoA();
-//testApartadoB();
+	
+		//testApartadoA();
+testApartadoB();
 		//testApartadoC();
 		//testApartadoD();
 		//testApartadoE();
