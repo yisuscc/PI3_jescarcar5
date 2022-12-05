@@ -1,5 +1,8 @@
 package test;
 
+import java.util.List;
+import java.util.Set;
+
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -18,17 +21,20 @@ public class TestEjercicio1 {
 	public static void testApartadoA() {
 		System.out.println("Los grafos resultantes se encuentran en la carpeta resultados/ejercicio1");
 		System.out.println("Testa apartado A fichero A");
-		Ejercicio1.apartadoA(grafo1, "FicheroA");
+		List<String> ls1 =  Ejercicio1.apartadoA(grafo1, "FicheroA").stream().map(c-> c.nombre()).toList();
+		System.out.println("Personas cuyos padres cumplen los requisitos:" + ls1);
 		System.out.println("Test apartado a fichero b");
-		Ejercicio1.apartadoA(grafo2, "FicheroB");
+		List<String> ls2 =  Ejercicio1.apartadoA(grafo2, "FicheroB").stream().map(c-> c.nombre()).toList();
+		System.out.println("Personas cuyos padres cumplen los requisitos:" + ls2);
 		
 	}
 	public static void testApartadoB() {
 		System.out.println("Los grafos resultantes se encuentran en la carpeta resultados/ejercicio1");
 		System.out.println("Test apartado B fichero A");
+		
 		System.out.println("Los ancestros de maría son : "+ Ejercicio1.apartadoB(grafo1, "Maria", "FicheroA"));
 		System.out.println("Test apartado B fichero B");
-		System.out.println("Los ancestros  de raquel son : "+ Ejercicio1.apartadoB(grafo2, "Raquel", "FicheroA"));
+		System.out.println("Los ancestros  de raquel son : "+ Ejercicio1.apartadoB(grafo2, "Raquel", "FicheroB"));
 		
 		
 	}

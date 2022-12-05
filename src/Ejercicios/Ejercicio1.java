@@ -46,7 +46,7 @@ public class Ejercicio1 {
 	}
 
 //APARTADO A
-	public static void apartadoA(Graph<Persona2, DefaultEdge> g, String nombreFichero) {
+	public static Set<Persona2> apartadoA(Graph<Persona2, DefaultEdge> g, String nombreFichero) {
 // averiguamos quien tiene los  padres 
 		Predicate<Persona2> pV = p -> {// separo el pedicate del for
 			//para mayorr comodidad al editarlo
@@ -67,7 +67,7 @@ public class Ejercicio1 {
 		//Set<Persona2> s = g.vertexSet().stream().filter(pV).collect(Collectors.toSet());
 		//hacemos la vista
 	Graph<Persona2, DefaultEdge> vista = SubGraphView.of(g, pV, t ->true );
-	System.out.println("Personas cuyos padres cumplen los requisitos:" + vista.vertexSet());
+
 	GraphColors.toDot(g,"resultados/ejercicio1/apartadoA"+
 	nombreFichero+".gv",
 	v-> v.nombre(),
@@ -76,7 +76,7 @@ public class Ejercicio1 {
 	a -> GraphColors.colorIf(Color.red, vista.containsEdge(a))  );
 			
 		
-		
+	return vista.vertexSet();	
 	}
 
 // APARTADO B
