@@ -21,6 +21,7 @@ import us.lsi.colors.GraphColors.Color;
 import us.lsi.common.Pair;
 import us.lsi.common.Trio;
 import us.lsi.graphs.Graphs2;
+import us.lsi.graphs.views.SubGraphView;
 
 public class Ejercicio2 {
 	public static record Ciudad2(String nombre, Integer puntos) {
@@ -86,14 +87,29 @@ public class Ejercicio2 {
 
 	// apartado c
 	
-	// 
+	
 	public static Pair<Double, List<Ciudad2>> apartadoC(Graph<Ciudad2, Arista> g) {
-		GraphPath<Ciudad2, Arista> gp = new HeldKarpTSP<Ciudad2, Arista> ().getTour(g);
+		//TODO Ver si es posible simplificarlo
+		// el lsSets se puede hacer mediante una llamada al apartado a
+		// pero eso implicaria reconstruir el grafo del apartadoA
+		//cosa que no quiero
+		var alg = new ConnectivityInspector<>(g); 
+		List<Set<Ciudad2>> lsSets = alg.connectedSets();
+		SortedSet<GraphPath<Ciudad2, Arista> > ss = new TreeSet<>((a,b)-> 
+		((Double)a.getWeight()).compareTo((Double)b.getWeight()));
+		//puedes usar un stream pero me gustan los sortedSet
 		
+		for(Set<Ciudad2> c : lsSets) {
+			Graph<Ciudad2, Arista> gAux = SubGraphView.of(g, c);
+			ss.add(new HeldKarpTSP().getTour(gAux));
+		}
+	
+		GraphPath<Ciudad2, Arista> gp = ss.first();
+
 		Graph<Ciudad2, Arista> gAux = gp.getGraph();
-		GraphColors.toDot(g, "resultados/ejercicio2/apartadoC.gv", v->v.nombre(), e-> "",
-				v-> GraphColors.colorIf(Color.blue,gAux.containsVertex(v)),
-				e-> GraphColors.colorIf(Color.blue, gAux.containsEdge(e)));
+		GraphColors.toDot(g, "resultados/ejercicio2/apartadoC.gv", v->v.nombre(), e-> e.precio.toString()+ " mins",
+				v-> GraphColors.colorIf(Color.cyan,gp.getVertexList().contains(v)),
+				e-> GraphColors.colorIf(Color.cyan, gp.getEdgeList().contains(e)));
 		
 		
 		return Pair.of(gp.getWeight(), gp.getVertexList());
@@ -128,8 +144,8 @@ public static void apartadoDGrafo(Graph<Ciudad2, Arista> g,
 	Predicate<Ciudad2> pV =v -> t.first().equals(v) || t.second().equals(v);
 	 String fichero  = "resultados/ejercicio2/apartadoD"+label+".gv";
 	Predicate<Arista> pA = a-> dij.getPath(t.first(), t.second()).getEdgeList().contains(a);
-	GraphColors.toDot(g, fichero,  v-> v.nombre() ,e-> e.tiempo()+" Min", v-> GraphColors.colorIf(Color.green, pV.test(v)),
-			a-> GraphColors.colorIf(Color.green, pA.test(a)));
+	GraphColors.toDot(g, fichero,  v-> v.nombre() ,e-> e.tiempo().toString()+" Min", v-> GraphColors.colorIf(Color.red, pV.test(v)),
+			a-> GraphColors.colorIf(Color.red, pA.test(a)));
 	
 	
 }

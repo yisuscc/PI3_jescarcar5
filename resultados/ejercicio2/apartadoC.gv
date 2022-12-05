@@ -1,0 +1,30 @@
+strict graph G {
+  1 [ label="Ciudad1" ];
+  2 [ label="Ciudad2" ];
+  3 [ label="Ciudad3" ];
+  4 [ label="Ciudad4" ];
+  5 [ label="Ciudad5" ];
+  6 [ color="cyan" label="Ciudad6" ];
+  7 [ color="cyan" label="Ciudad7" ];
+  8 [ color="cyan" label="Ciudad8" ];
+  9 [ color="cyan" label="Ciudad9" ];
+  10 [ color="cyan" label="Ciudad10" ];
+  11 [ color="cyan" label="Ciudad11" ];
+  1 -- 2 [ label="30.0 mins" ];
+  2 -- 3 [ label="20.0 mins" ];
+  3 -- 5 [ label="24.0 mins" ];
+  2 -- 4 [ label="20.0 mins" ];
+  4 -- 5 [ label="8.0 mins" ];
+  1 -- 3 [ label="5.0 mins" ];
+  5 -- 1 [ label="10.0 mins" ];
+  6 -- 8 [ color="cyan" label="6.0 mins" ];
+  9 -- 6 [ label="35.0 mins" ];
+  8 -- 10 [ color="cyan" label="10.0 mins" ];
+  10 -- 9 [ color="cyan" label="12.0 mins" ];
+  6 -- 10 [ label="32.0 mins" ];
+  6 -- 7 [ label="23.0 mins" ];
+  7 -- 9 [ color="cyan" label="5.0 mins" ];
+  7 -- 11 [ color="cyan" label="12.0 mins" ];
+  11 -- 6 [ color="cyan" label="15.0 mins" ];
+  7 -- 8 [ label="4.0 mins" ];
+}

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 import org.jgrapht.Graph;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
 
@@ -48,14 +49,17 @@ public class TestEjercicio2 {
 		List<Ciudad2> lsAux = par.second();
 		List<String> ls = lsAux.stream().map(c-> c.nombre()).toList();
 		Double peso = par.first();
-		System.out.println("Grupo de ciudades a visitar que dan lugar al camino cerrado de menor precio: " + lsAux+ "-->" +peso);
+		System.out.println("Grupo de ciudades a visitar que dan lugar al camino cerrado de menor precio: " + ls+ "-->" +peso);
 		
 	}
 	public static void testApartadoD() {
 	
 		System.out.println("Los grafos resultantes se encuentran en la carpeta resultados/ejercicio2");
 		System.out.println("Test apartado D ejercicio 2");
-		List<Set<Ciudad2>> ls1 = Ejercicio2.apartadoA(grafoTiempo);
+//		 el ls1 se puede hacer con una llamada al apartado a pero
+//		no es conveniente ya que se reescribiria el grafo
+		var alg = new ConnectivityInspector<>(grafoTiempo);
+		List<Set<Ciudad2>> ls1 = alg.connectedSets();;
 		Trio<Ciudad2,Ciudad2, Double> t1 = Ejercicio2.apartadoD(grafoTiempo, ls1.get(0),"Grupo1");
 		Trio<Ciudad2,Ciudad2, Double> t2 = Ejercicio2.apartadoD(grafoTiempo, ls1.get(1),"Grupo2");
 		List<String> lsAux1 = ls1.get(0).stream().map(c->c.nombre()).toList();
@@ -73,7 +77,7 @@ public class TestEjercicio2 {
 	public static void main(String[] args) {
 		testApartadoA();
 		testApartadoB();
-		//testApartadoC(); //TODO Corregir problema Con el HK
+		testApartadoC(); //TODO Corregir problema Con el HK
 		testApartadoD();
 		
 
