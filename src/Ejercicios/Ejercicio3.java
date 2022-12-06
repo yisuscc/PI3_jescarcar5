@@ -14,17 +14,7 @@ import us.lsi.common.Pair;
 
 public class Ejercicio3 {
 	// he decidido utilizar String para simplificar 
-//	public static record String(String String) {
-//		// en su lugar se puede utilizar simplemente un string
-//		public static  String ofFormat(String[]s) {
-//			return new String(s[0]);
-//		}
-//		public static String of (String s) {
-//			return new String(s);
-//		}
-//	}
-//	
-//	
+// en lugar de un record de Asignatura(String asignatura)
 //Apartado A
 	public static Pair<Integer, List<Set<String>>> apartadoA(Graph<String, DefaultEdge> g, String nomFich){
 		 VertexColoringAlgorithm<String> vcaa = new GreedyColoring<>(g);
