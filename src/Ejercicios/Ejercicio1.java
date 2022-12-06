@@ -73,7 +73,7 @@ public class Ejercicio1 {
 	v-> v.nombre(),
 	a-> "",
 	v-> GraphColors.colorIf(Color.blue, vista.containsVertex(v)),//probar el color if de yescolor no colorr
-	a -> GraphColors.colorIf(Color.red, vista.containsEdge(a))  );
+	a -> GraphColors.colorIf(Color.black, vista.containsEdge(a))  );
 			
 		
 	return vista.vertexSet();	
@@ -87,6 +87,7 @@ public class Ejercicio1 {
 		
 		Set<Persona2> s = new HashSet<>();
 		apartadoBaux(g, p, s);
+		apartadoBGrafo(g, p, s, nombreFichero);
 		return s;
 	}
 //
@@ -107,7 +108,7 @@ public class Ejercicio1 {
 	}
 	private static void apartadoBGrafo(Graph<Persona2, DefaultEdge> g, Persona2 p, Set<Persona2> s,String nombreFichero) {
 	
-		GraphColors.toDot(g,"resultados/ejercicio1/apartadoD"+ nombreFichero+".gv", v-> v.nombre(), a -> "",v->GraphColors.color(asigna(v, p, s)),
+		GraphColors.toDot(g,"resultados/ejercicio1/apartadoB"+ nombreFichero+".gv", v-> v.nombre(), a -> "",v->GraphColors.color(asigna(v, p, s)),
 				e-> GraphColors.color(Color.black));
 
 	}
@@ -124,8 +125,8 @@ public class Ejercicio1 {
 			res=  2;
 		else if(s.contains(v))
 			res = 4;
-		else res = 5;
-		return vc[5];
+		else res = 8;
+		return vc[res];
 			
 	
 	}

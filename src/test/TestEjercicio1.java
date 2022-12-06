@@ -54,7 +54,7 @@ public class TestEjercicio1 {
 		System.out.println("Los grafos resultantes se encuentran en la carpeta resultados/ejercicio1");
 		System.out.println("Test apartado D fichero A");
 		Set<String> s1 = Ejercicio1.apartadoD(grafo1, "FicheroA").stream().map(c-> c.nombre()).collect(Collectors.toSet());
-		Set<String> s2 = Ejercicio1.apartadoD(grafo2, "Fichero2").stream().map(c-> c.nombre()).collect(Collectors.toSet());
+		Set<String> s2 = Ejercicio1.apartadoD(grafo2, "FicheroB").stream().map(c-> c.nombre()).collect(Collectors.toSet());
 		System.out.println("Los Personas que tienen hijos con distintas personas: " + s1);
 		System.out.println("Test apartado D fichero B");
 		System.out.println("Los Personas que tienen hijos con distintas personas: " +s2);
