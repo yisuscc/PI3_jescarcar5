@@ -2,6 +2,7 @@ package test;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
@@ -31,10 +32,11 @@ public class TestEjercicio1 {
 	public static void testApartadoB() {
 		System.out.println("Los grafos resultantes se encuentran en la carpeta resultados/ejercicio1");
 		System.out.println("Test apartado B fichero A");
-		
-		System.out.println("Los ancestros de maría son : "+ Ejercicio1.apartadoB(grafo1, "Maria", "FicheroA"));
+		Set<String> s1 = Ejercicio1.apartadoB(grafo1, "Maria", "FicheroA").stream().map(c->c.nombre()).collect(Collectors.toSet());
+		System.out.println("Los ancestros de maría son : "+s1 );
 		System.out.println("Test apartado B fichero B");
-		System.out.println("Los ancestros  de raquel son : "+ Ejercicio1.apartadoB(grafo2, "Raquel", "FicheroB"));
+		Set<String> s2 = Ejercicio1.apartadoB(grafo2, "Raquel", "FicheroB").stream().map(c->c.nombre()).collect(Collectors.toSet());
+		System.out.println("Los ancestros  de raquel son : "+ s2);
 		
 		
 	}
@@ -51,9 +53,11 @@ public class TestEjercicio1 {
 	public static void testApartadoD() {
 		System.out.println("Los grafos resultantes se encuentran en la carpeta resultados/ejercicio1");
 		System.out.println("Test apartado D fichero A");
-		System.out.println("Los Personas que tienen hijos con distintas personas: " +Ejercicio1.apartadoD(grafo1, "FicheroA"));
+		Set<String> s1 = Ejercicio1.apartadoD(grafo1, "FicheroA").stream().map(c-> c.nombre()).collect(Collectors.toSet());
+		Set<String> s2 = Ejercicio1.apartadoD(grafo2, "Fichero2").stream().map(c-> c.nombre()).collect(Collectors.toSet());
+		System.out.println("Los Personas que tienen hijos con distintas personas: " + s1);
 		System.out.println("Test apartado D fichero B");
-		System.out.println("Los Personas que tienen hijos con distintas personas: " +Ejercicio1.apartadoD(grafo2, "FicheroB"));
+		System.out.println("Los Personas que tienen hijos con distintas personas: " +s2);
 	}
 	public static void testApartadoE() {
 		System.out.println("Los grafos resultantes se encuentran en la carpeta resultados/ejercicio1");
