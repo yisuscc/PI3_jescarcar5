@@ -174,7 +174,7 @@ public class Ejercicio1 {
 	}
 	private static void apartadoDGrafo(Graph<Persona2, DefaultEdge> grafo,Set<Persona2> set, String nombreFichero) {
 		GraphColors.toDot(grafo,"resultados/ejercicio1/apartadoD"+ nombreFichero+".gv", v-> v.nombre(), a -> "", v-> GraphColors.colorIf(Color.cyan, set.contains(v)),
-				a-> GraphColors.colorIf(Color.black, grafo.containsEdge(a)));
+				a-> GraphColors.color(Color.black));
 		
 	}
 
@@ -188,7 +188,7 @@ public class Ejercicio1 {
 	}
 	private static void apartadoEGrafo(Graph<Persona2, DefaultEdge> grafo,Set<Persona2> set, String nombreFichero) {
 		GraphColors.toDot(grafo,"resultados/ejercicio1/apartadoE"+ nombreFichero+".gv", v-> v.nombre(), a -> "", v-> GraphColors.colorIf(Color.cyan, set.contains(v)),
-				a-> GraphColors.colorIf(Color.black, grafo.containsEdge(a)));
+				a-> GraphColors.color(Color.black));
 		}
 
 	

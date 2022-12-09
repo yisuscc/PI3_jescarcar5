@@ -106,7 +106,7 @@ public class Ejercicio2 {
 	
 		GraphPath<Ciudad2, Arista> gp = ss.first();
 
-		Graph<Ciudad2, Arista> gAux = gp.getGraph();
+		//Graph<Ciudad2, Arista> gAux = gp.getGraph();
 		GraphColors.toDot(g, "resultados/ejercicio2/apartadoC.gv", v->v.nombre(), e-> e.precio.toString()+ " mins",
 				v-> GraphColors.colorIf(Color.cyan,gp.getVertexList().contains(v)),
 				e-> GraphColors.colorIf(Color.cyan, gp.getEdgeList().contains(e)));
